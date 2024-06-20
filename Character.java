@@ -1,7 +1,7 @@
 import java.util.UUID;
 import java.util.Random;
 
-public class Character {
+public abstract class Character {
     private String id;
     private String name;
     private int hp;
@@ -37,22 +37,15 @@ public class Character {
 
     public void setHp(int hp) {
         this.hp = hp;
+        this.hp = hp;
+        if (this.hp <= 0) {
+            this.isAlive = false;
+            this.hp = 0;
+        }
     }
 
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
-    public static Character createWarrior(String name) {
-        Random rand = new Random();
-        int hp = rand.nextInt(101) + 100; // Random hp between 100 and 200
-        return new Character(name, hp);
-    }
-
-    public static Character createWizard(String name) {
-        Random rand = new Random();
-        int hp = rand.nextInt(51) + 50; // Random hp between 50 and 100
-        return new Character(name, hp);
+    public void takeDamage(int damage) {
+        setHp(this.hp - damage);
     }
 
     @Override
@@ -60,11 +53,11 @@ public class Character {
         return "Character{id='" + id + "', name='" + name + "', hp=" + hp + ", isAlive=" + isAlive + "}";
     }
 
-    public static void main(String[] args) {
-        Character warrior = Character.createWarrior("Thor");
-        Character wizard = Character.createWizard("Gandalf");
+    public boolean isAlive() {
+        return false;
+    }
 
-        System.out.println(warrior);
-        System.out.println(wizard);
+    public void attack(Character character){
+
     }
 }

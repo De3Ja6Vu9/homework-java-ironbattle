@@ -1,11 +1,11 @@
 import java.util.Random;
 
-public class Wizard extends Character implements Attacker {
+public class Wizard extends Character {
 
     private int mana;
     private int intelligence;
 
-    public Wizard(String name, int hp, int mana, int intelligence) {
+    public Wizard(String name, int hp1, int i, int hp) {
         super(name, hp);
         this.mana = mana;
         this.intelligence = intelligence;
@@ -30,26 +30,29 @@ public class Wizard extends Character implements Attacker {
 
     // Methods
 
-    @Override
     public void attack(Character character) {
-        Random random = new Random(); // Create a new random object.
-        int choice = random.nextInt(2); // Randomly choose between 0 and 1
+        Random rand = new Random();
+        boolean fireball = rand.nextBoolean();
 
-        if (choice == 0 && mana >= 5) { // Fireball
-            mana -= 5; // Decrease mana by 5.
-            int damage = intelligence;
-            character.setHp(character.getHp() - damage);
-            System.out.println(this.getName() + " casts a Fireball and deals " + damage + " damage to " + character.getName());
-        } else if (mana >= 1) { // Staff hit
-            mana += 1; // Increase mana by 1.
-            int damage = 2;
-            character.setHp(character.getHp() - damage);
-            System.out.println(this.getName() + " hits with a staff and deals " + damage + " damage to " + character.getName());
-        } else { // Not enough mana
-            mana += 2; // Increase mana by 2.
-            System.out.println(this.getName() + " does not have enough mana to attack");
+        if (mana < 5) {
+            fireball = false;
         }
-    }
-}
 
+        int damage;
+        if (fireball) {
+            damage = intelligence;
+            mana -= 5;
+        } else {
+            if (mana < 1) {
+                damage = 0;
+                mana += 2;
+            } else {
+                damage = 2;
+                mana += 1;
+            }
+        }
+
+        character.takeDamage(damage);
+        System.out.println(getName() + " attacks " + character.getName() + " for " + damage + " damage. (" + (fireball ? "Fireball" : "Staff hit") + ")");
+    }
 }
